@@ -439,7 +439,9 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
         if (!_player.currentItem) {
             return;
         }
-        if (_player.status != AVPlayerStatusReadyToPlay) {
+
+        if (_player.currentItem.status != AVPlayerItemStatusReadyToPlay || _player.status != AVPlayerStatusReadyToPlay) {
+
             return;
         }
 
@@ -470,6 +472,10 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
         int64_t duration = [BetterPlayerTimeUtils FLTCMTimeToMillis:(_player.currentItem.asset.duration)];
         if (_overriddenDuration > 0 && duration > _overriddenDuration){
             _player.currentItem.forwardPlaybackEndTime = CMTimeMake(_overriddenDuration/1000, 1);
+        }
+
+        if ([self duration] == 0) {
+            return;
         }
 
         _isInitialized = true;
